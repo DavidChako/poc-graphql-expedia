@@ -1,0 +1,7 @@
+ktor:
+  application:
+    modules:
+      - com.icosahedron.graphql.ApplicationKt.graphQLModule
+  deployment:
+    host: localhost
+    port: 8080

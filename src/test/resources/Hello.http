@@ -1,0 +1,17 @@
+###
+GET http://localhost:8080
+
+###
+GRAPHQL http://localhost:8080/graphql
+
+query {
+  hello
+}
+
+###
+GRAPHQL http://localhost:8080/graphql
+
+query {
+    goodbye
+}
+
