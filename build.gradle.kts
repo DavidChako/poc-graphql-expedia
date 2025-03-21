@@ -1,6 +1,11 @@
 plugins {
     kotlin("jvm") version "2.1.10"
+    id("io.ktor.plugin") version "3.1.1"
     groovy // Spock
+}
+
+application {
+    mainClass = "com.icosahedron.graphql.ApplicationKt"
 }
 
 group = "com.icosahedron"
@@ -11,21 +16,20 @@ repositories {
 }
 
 dependencies {
-
-//    implementation("com.google.protobuf:protobuf-java") {
-//        version {
-//            strictly("4.28.2")
-//        }
-//    }
+    implementation("io.ktor:ktor-server-config-yaml")
+    implementation("io.ktor:ktor-server-netty")
+    implementation("io.ktor:ktor-server-status-pages")
 
     implementation("com.expediagroup:graphql-kotlin-ktor-server:8.4.0")
+    implementation("com.google.protobuf:protobuf-java") {
+        // Fix transitive vulnerability:
+        // implementation("com.expediagroup:graphql-kotlin-ktor-server:8.4.0")
+        // --> maven:com.google.protobuf:protobuf-java:4.27.1 is vulnerable
+        version {
+            strictly("4.28.2")
+        }
+    }
 
-    val ktorVersion = "3.0.3"
-    implementation("io.ktor:ktor-server-config-yaml:$ktorVersion")
-    implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
-
-//    implementation("io.ktor:ktor-server-host-common:$ktorVersion")
     implementation("ch.qos.logback:logback-classic:1.5.17")
 
     val spockVersion = "2.4-M5-groovy-4.0"
@@ -43,4 +47,8 @@ tasks.test {
 
 kotlin {
     jvmToolchain(19)
+
+    compilerOptions {
+        freeCompilerArgs.addAll("-Xjsr305=strict")
+    }
 }
